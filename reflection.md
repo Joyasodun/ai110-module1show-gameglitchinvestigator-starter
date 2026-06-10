@@ -4,9 +4,14 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+The first time I ran the game it looked playable, but it broke as soon as I started interacting with it. The very first guess could crash the whole app with a Python error, the attempt counter never matched how many guesses I had actually made, the score went down even when I won, and once a game ended the "New Game" button refused to start a fresh round.
+
+Concrete bugs I noticed at the start:
+
+- **The game crashed on a guess.** I expected to see a "Go HIGHER/LOWER" hint, but instead the app threw a `TypeError` because the secret number was being compared against text on some attempts.
+- **The attempts counter was off by one.** I expected "Attempts left" to drop to the correct number after each guess, but it always showed one more attempt than I really had.
+- **The score punished me even when I won.** I expected winning to raise my score, but I kept ending games with a lower or negative score, and "too high" guesses sometimes added points and sometimes subtracted them.
+- **New Game was broken.** I expected the "New Game" button to start a fresh round, but after winning or losing it would show the "game over" message instead of letting me play, and old guesses stayed in the history.
 
 **Bug Reproduction Log**
 
@@ -14,9 +19,10 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Guess of `50` on the 2nd attempt (Normal difficulty) | A "Go HIGHER!" or "Go LOWER!" hint is shown | App crashed and stopped responding | `TypeError: '>' not supported between instances of 'int' and 'str'` (app.py line 36) |
+| Submit one guess, then read "Attempts left" vs. the debug "Attempts" value | After 1 guess on Normal (limit 8), it should read "Attempts left: 7" | It read "Attempts left: 8" — one more than I actually had | none |
+| Win the game on attempt 3 after a few wrong guesses | Final score should go up for winning | Final score ended low / negative even though I won | none |
+| Win or lose a game, then click "New Game 🔁" | A fresh round starts so I can guess again | "You already won / Game over" message appeared and the input was blocked; old guesses still showed in History | none |
 
 ---
 
